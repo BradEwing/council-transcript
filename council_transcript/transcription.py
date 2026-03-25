@@ -1,6 +1,7 @@
 """Transcript extraction from YouTube captions and audio."""
 
 import logging
+import re
 import tempfile
 from pathlib import Path
 from typing import Optional
@@ -15,6 +16,22 @@ from youtube_transcript_api._errors import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+def _split_sentences(text: str) -> str:
+    """Put each sentence on its own line.
+
+    Splits on sentence-ending punctuation (. ! ?) while preserving
+    the punctuation and spacing.
+
+    Args:
+        text: The text to split
+
+    Returns:
+        Text with each sentence on a new line
+    """
+    sentences = re.split(r'(?<=[.!?])\s+', text.strip())
+    return "\n".join(s.strip() for s in sentences if s.strip())
 
 
 class TranscriptExtractor:
@@ -84,7 +101,7 @@ class TranscriptExtractor:
             video_id: YouTube video ID
 
         Returns:
-            Transcript text
+            Transcript text with each sentence on its own line
 
         Raises:
             Exception: If both strategies fail
@@ -94,12 +111,12 @@ class TranscriptExtractor:
         # Try captions first
         captions = self.extract_captions(video_id)
         if captions:
-            return captions
+            return _split_sentences(captions)
 
         logger.info("Captions not available, falling back to audio transcription with Whisper...")
         try:
             transcript = self._transcribe_with_whisper(video_id)
-            return transcript
+            return _split_sentences(transcript)
         except Exception as e:
             logger.error(f"Audio transcription failed: {e}")
             raise

@@ -42,6 +42,7 @@ def get_video_info(url: str) -> dict:
         - video_id: str
         - title: str
         - duration: Optional[int] in seconds
+        - upload_date: Optional[str] in YYYY_MM_DD format
         - is_live: bool
         - is_upcoming: bool
     """
@@ -56,10 +57,16 @@ def get_video_info(url: str) -> dict:
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(f"https://www.youtube.com/watch?v={video_id}", download=False)
 
+    # Format upload_date from YYYYMMDD to YYYY_MM_DD
+    upload_date = info.get("upload_date")
+    if upload_date and len(upload_date) == 8:
+        upload_date = f"{upload_date[:4]}_{upload_date[4:6]}_{upload_date[6:]}"
+
     return {
         "video_id": video_id,
         "title": info.get("title", "Unknown"),
         "duration": info.get("duration"),
+        "upload_date": upload_date,
         "is_live": info.get("is_live", False),
         "is_upcoming": info.get("is_upcoming", False),
     }

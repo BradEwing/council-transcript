@@ -2,7 +2,6 @@
 
 import logging
 import re
-from datetime import datetime
 from pathlib import Path
 
 from council_transcript.config import get_settings
@@ -94,7 +93,7 @@ class TranscriptPipeline:
         self.extractor.unload_model()
 
         # Save transcript
-        transcript_file = self._save_transcript(transcript, video_id)
+        transcript_file = self._save_transcript(transcript, video_id, video_info["upload_date"])
         logger.info(f"Transcript saved to {transcript_file}")
 
         return {
@@ -106,26 +105,27 @@ class TranscriptPipeline:
             "is_upcoming": video_info["is_upcoming"],
         }
 
-    def _save_transcript(self, transcript: str, video_id: str) -> Path:
+    def _save_transcript(self, transcript: str, video_id: str, upload_date: str = None) -> Path:
         """Save transcript with date and video ID in filename.
 
         Args:
             transcript: Transcript text to save
             video_id: YouTube video ID (ensures unique filenames)
+            upload_date: Video upload date in YYYY_MM_DD format (from video metadata)
 
         Returns:
             Path to saved file
 
         Raises:
-            FileExistsError: If transcript already exists for this video today
+            FileExistsError: If transcript already exists for this video
         """
-        date_str = datetime.now().strftime("%Y_%m_%d")
+        date_str = upload_date or "unknown_date"
         filename = f"{date_str}_{video_id}.txt"
         filepath = self.config.transcripts_dir / filename
 
         if filepath.exists():
             raise FileExistsError(
-                f"Transcript already exists for {video_id} on this date: {filepath}. "
+                f"Transcript already exists for {video_id}: {filepath}. "
                 "Delete the file to reprocess."
             )
 

@@ -29,6 +29,13 @@ class TranscriptExtractor:
         self.config = config
         self.whisper_model = None  # Lazy load on first use
 
+    def unload_model(self) -> None:
+        """Release the Whisper model from memory."""
+        if self.whisper_model is not None:
+            del self.whisper_model
+            self.whisper_model = None
+            logger.info("Whisper model unloaded from memory")
+
     def extract_captions(self, video_id: str, language_codes: Optional[list] = None) -> Optional[str]:
         """Extract captions using youtube-transcript-api.
 
@@ -115,7 +122,7 @@ class TranscriptExtractor:
         try:
             logger.info("Loading Whisper model...")
             if self.whisper_model is None:
-                self.whisper_model = whisper.load_model("base")
+                self.whisper_model = whisper.load_model(self.config.whisper_model_size)
 
             logger.info("Transcribing audio with Whisper...")
             result = self.whisper_model.transcribe(str(audio_path))
@@ -144,8 +151,6 @@ class TranscriptExtractor:
         temp_dir = Path(tempfile.gettempdir()) / "council_transcript"
         temp_dir.mkdir(exist_ok=True)
 
-        audio_path = temp_dir / f"{video_id}.mp3"
-
         ydl_opts = {
             "format": "bestaudio/best",
             "postprocessors": [
@@ -165,11 +170,17 @@ class TranscriptExtractor:
                 logger.debug(f"Downloading audio for {video_id}...")
                 ydl.download([f"https://www.youtube.com/watch?v={video_id}"])
 
-            if audio_path.exists():
-                logger.info(f"Audio downloaded to {audio_path}")
-                return audio_path
-            else:
-                raise Exception(f"Audio download failed for {video_id}")
+            # Locate the actual output file (glob to handle version-dependent extensions)
+            matches = list(temp_dir.glob(f"{video_id}.*"))
+            if not matches:
+                raise FileNotFoundError(
+                    f"Audio download produced no output file for {video_id}. "
+                    f"Files in {temp_dir}: {list(temp_dir.iterdir())}"
+                )
+            # Take the most recently modified file in case of duplicates
+            audio_path = max(matches, key=lambda p: p.stat().st_mtime)
+            logger.info(f"Audio downloaded to {audio_path}")
+            return audio_path
         except Exception as e:
             logger.error(f"Failed to download audio: {e}")
             raise

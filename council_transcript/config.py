@@ -1,25 +1,12 @@
 """Configuration management for the transcript pipeline."""
 
 from pathlib import Path
-from typing import Optional
 
 from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
-
-    # API Keys
-    openai_api_key: Optional[str] = None
-    anthropic_api_key: str
-
-    # LLM Configuration
-    llm_model: str = "claude-opus-4-6"
-    temperature: float = 0.7
-
-    # Transcription Configuration
-    enable_whisper_fallback: bool = False
-    enable_claude_transcription: bool = True
 
     # Paths
     temp_dir: Path = Path("./tmp")

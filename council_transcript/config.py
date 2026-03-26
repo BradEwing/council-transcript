@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     # Paths
     temp_dir: Path = Field(default=Path("./tmp"), alias="SMF_TEMP_DIR")
     transcripts_dir: Path = Field(default=Path("./transcripts"), alias="SMF_TRANSCRIPTS_DIR")
+    reports_dir: Path = Field(default=Path("./reports"), alias="SMF_REPORTS_DIR")
     logs_dir: Path = Field(default=Path("./logs"), alias="SMF_LOGS_DIR")
 
     # Logging
@@ -31,6 +32,7 @@ class Settings(BaseSettings):
         # Create required directories
         self.temp_dir.mkdir(parents=True, exist_ok=True)
         self.transcripts_dir.mkdir(parents=True, exist_ok=True)
+        self.reports_dir.mkdir(parents=True, exist_ok=True)
         self.logs_dir.mkdir(parents=True, exist_ok=True)
 
 

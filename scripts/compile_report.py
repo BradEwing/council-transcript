@@ -5,6 +5,11 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+# Add parent directory to path for council_transcript imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from council_transcript.config import get_settings
+
 
 def main():
     """Compile report from transcript file and optional analysis files."""
@@ -14,6 +19,8 @@ def main():
         print("\nExample:")
         print('  python scripts/compile_report.py transcripts/2026_03_25_dQw4w9WgXcQ.txt')
         sys.exit(1)
+
+    settings = get_settings()
 
     transcript_file = Path(sys.argv[1])
     smf_analysis_file = Path(sys.argv[2]) if len(sys.argv) > 2 else None
@@ -76,10 +83,7 @@ This report documents a Santa Monica council meeting with comprehensive analysis
 """
 
     # Save report
-    reports_dir = Path("reports")
-    reports_dir.mkdir(exist_ok=True)
-
-    report_file = reports_dir / f"{report_date}_REPORT.md"
+    report_file = settings.reports_dir / f"{report_date}_REPORT.md"
 
     # Add counter if file exists
     counter = 1

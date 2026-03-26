@@ -53,4 +53,4 @@ transcripts/
 logs/
 
 # Claude
-.claude/scheduled_tasks.lock
+.claude/scheduled_tasks.lock.claude/agent-memory/

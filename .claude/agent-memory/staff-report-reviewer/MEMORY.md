@@ -1,2 +1,0 @@
-- [SM Agenda Source](reference_smgov_agendas.md) — Where to find SM council agendas and staff reports online
-- [SM Council Patterns](project_sm_council_patterns.md) — Procedural patterns, council composition, and meeting structure as of March 2026

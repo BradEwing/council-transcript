@@ -1,3 +1,0 @@
-- [User Profile — Brad Ewing](user_brad_ewing.md) — Brad's role with SMF and how he uses this tool; expects reports saved to `reports/YYYY_MM_DD_SMF_ANALYSIS.md`
-- [Recurring Issues and Policy Threads](project_recurring_issues.md) — Ongoing SMF-relevant policy threads: airport flights/lead, airport conversion, FPPC/Zwick conflict, ADU zoning conflict, Ocean Ave transparency
-- [Council Member Profiles and Stances](project_council_members.md) — Current SM council members, their SMF-relevant stances, and key staff; updated from March 10 2026 meeting

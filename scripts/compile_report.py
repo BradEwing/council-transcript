@@ -42,12 +42,22 @@ def main():
     if staff_analysis_file and staff_analysis_file.exists():
         staff_analysis = staff_analysis_file.read_text(encoding='utf-8')
 
+    # Extract meeting date from transcript filename (format: YYYY_MM_DD_VIDEO_ID.txt)
+    stem = transcript_file.stem  # e.g. "2026_03_11_xAQ3mXqNhsU"
+    parts = stem.split("_", 3)
+    if len(parts) >= 3 and parts[0].isdigit() and parts[1].isdigit() and parts[2].isdigit():
+        report_date = f"{parts[0]}_{parts[1]}_{parts[2]}"
+        meeting_date = f"{parts[0]}-{parts[1]}-{parts[2]}"
+    else:
+        report_date = datetime.now().strftime("%Y_%m_%d")
+        meeting_date = datetime.now().strftime("%Y-%m-%d")
+
     # Generate report
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    report_date = datetime.now().strftime("%Y_%m_%d")
 
     report = f"""# Council Meeting Report
 
+**Meeting Date:** {meeting_date}
 **Generated:** {timestamp}
 **Transcript File:** {transcript_file.name}
 

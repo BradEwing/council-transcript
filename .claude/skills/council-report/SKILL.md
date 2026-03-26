@@ -11,7 +11,7 @@ Generate a comprehensive council meeting report with transcription and analysis.
 ## Usage
 
 ```bash
-python scripts/council_report.py "<YouTube_URL>"
+python3 scripts/council_report.py "<YouTube_URL>"
 ```
 
 ## What it does
@@ -25,8 +25,12 @@ python scripts/council_report.py "<YouTube_URL>"
 ## Example
 
 ```bash
-python scripts/council_report.py "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+python3 scripts/council_report.py "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 ```
+
+## Important: Timeouts
+
+Transcript extraction can take a very long time, especially when Whisper fallback is needed for multi-hour council meetings. **The transcript extraction command MUST be run in background mode** (`run_in_background: true`) since it can easily exceed 15 minutes when Whisper transcription is required. Do NOT use a foreground bash command for transcript extraction — it will time out.
 
 ## Implementation Notes
 
@@ -34,10 +38,11 @@ This is a three-phase workflow:
 
 ### Phase 1: Transcript Extraction & Display
 
-Run the main script:
+Run the main script **in background mode** (it can take 15+ minutes for Whisper fallback):
 ```bash
-python scripts/council_report.py "https://www.youtube.com/watch?v=VIDEO_ID"
+python3 scripts/council_report.py "https://www.youtube.com/watch?v=VIDEO_ID"
 ```
+Use `run_in_background: true` on the Bash tool. You will be notified when it completes. Then read the output file and the transcript file from `transcripts/`.
 
 The script will:
 - Extract transcript via YouTube captions (fast) or Whisper (fallback)
@@ -83,7 +88,7 @@ In Claude Code, create new messages to run the analysis agents. The script provi
 
 Once both analyses are saved, compile them:
 ```bash
-python scripts/compile_report.py transcripts/YYYY_MM_DD_VIDEO_ID.txt \
+python3 scripts/compile_report.py transcripts/YYYY_MM_DD_VIDEO_ID.txt \
   reports/YYYY_MM_DD_SMF_ANALYSIS.md \
   reports/YYYY_MM_DD_STAFF_ANALYSIS.md
 ```

@@ -24,42 +24,24 @@ pip install -e ".[dev]"
 ### Running
 ```bash
 # Extract transcript from a YouTube URL
-python -m council_transcript.main "https://www.youtube.com/watch?v=VIDEO_ID"
+python3 -m council_transcript.main "https://www.youtube.com/watch?v=VIDEO_ID"
 
 # Using Python API
-python -c "
+python3 -c "
 from council_transcript.main import TranscriptPipeline
 result = TranscriptPipeline().process_youtube_url('https://www.youtube.com/watch?v=VIDEO_ID')
 print(result['transcript'])
 "
 ```
 
-### Development & Code Quality
-```bash
-# Format code
-black council_transcript/
-
-# Lint with ruff
-ruff check council_transcript/
-
-# Type checking
-mypy council_transcript/
-
-# Run tests
-pytest
-
-# Run a specific test
-pytest tests/test_file.py::test_function_name -v
-```
-
 ### Configuration
 Settings are loaded from environment variables (or `.env` file):
 ```bash
-TEMP_DIR=./tmp                    # Temporary files (default: ./tmp)
-TRANSCRIPTS_DIR=./transcripts     # Output directory (default: ./transcripts)
-LOGS_DIR=./logs                   # Logs directory (default: ./logs)
-LOG_LEVEL=INFO                    # Logging level (default: INFO)
-WHISPER_MODEL_SIZE=base           # Whisper model: tiny, base, small, medium, large (default: base)
+SMF_TEMP_DIR=./tmp                    # Temporary files (default: ./tmp)
+SMF_TRANSCRIPTS_DIR=./transcripts     # Output directory (default: ./transcripts)
+SMF_LOGS_DIR=./logs                   # Logs directory (default: ./logs)
+SMF_LOG_LEVEL=INFO                    # Logging level (default: INFO)
+SMF_WHISPER_MODEL_SIZE=base           # Whisper model: tiny, base, small, medium, large (default: base)
 ```
 
 ## Architecture & Data Flow

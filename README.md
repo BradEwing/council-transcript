@@ -1,14 +1,12 @@
 # Council Transcript
 
-A Python pipeline for extracting transcripts from YouTube videos, with automatic audio transcription fallback.
+A Python pipeline for extracting and summarizing transcripts from Santa Monica council YouTube videos, with automatic audio transcription fallback.
 
 ## Features
 
 - **Multi-strategy transcript extraction**:
   1. YouTube captions (youtube-transcript-api)
   2. **Local Whisper audio transcription** - runs locally, no API keys needed
-- **No external dependencies** - uses only open-source tools
-- **Simple and fast** - download video, extract audio, transcribe
 - **Automatic saving** - transcripts saved to `./transcripts/YYYY_MM_DD.txt`
 
 ## Installation
@@ -30,8 +28,6 @@ A Python pipeline for extracting transcripts from YouTube videos, with automatic
    ```bash
    pip install -e .
    ```
-
-No API keys required!
 
 ## Usage
 
@@ -59,18 +55,6 @@ Transcript saved to: ./transcripts/2026_03_25.txt
 Never gonna give you up, never gonna let you down...
 ```
 
-### Python API
-
-```python
-from council_transcript.main import TranscriptPipeline
-
-pipeline = TranscriptPipeline()
-result = pipeline.process_youtube_url("https://www.youtube.com/watch?v=VIDEO_ID")
-
-print(result["title"])
-print(result["transcript"])
-print(result["transcript_file"])  # Path to saved file
-```
 
 ## Project Structure
 
@@ -91,20 +75,10 @@ council-transcript/
 
 All configuration is done via environment variables in `.env`:
 
-- `TEMP_DIR` - Temporary files directory (default: `./tmp`)
-- `TRANSCRIPTS_DIR` - Output directory for transcripts (default: `./transcripts`)
-- `LOGS_DIR` - Logs directory (default: `./logs`)
-- `LOG_LEVEL` - Logging level (default: `INFO`)
-
-## Roadmap
-
-- [x] Local Whisper audio transcription
-- [x] YouTube captions extraction
-- [ ] Batch processing for multiple videos
-- [ ] Additional output formats (JSON, SRT)
-- [ ] Transcript caching
-- [ ] Web UI
-- [ ] Test suite
+- `SMF_TEMP_DIR` - Temporary files directory (default: `./tmp`)
+- `SMF_TRANSCRIPTS_DIR` - Output directory for transcripts (default: `./transcripts`)
+- `SMF_LOGS_DIR` - Logs directory (default: `./logs`)
+- `SMF_LOG_LEVEL` - Logging level (default: `INFO`)
 
 ## License
 

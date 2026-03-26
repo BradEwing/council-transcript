@@ -50,3 +50,6 @@ Thumbs.db
 downloads/
 transcripts/
 logs/
+
+# Claude
+.claude/scheduled_tasks.lock

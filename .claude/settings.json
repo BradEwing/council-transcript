@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "env": {
+    "SMF_TEMP_DIR": "./tmp",
+    "SMF_TRANSCRIPTS_DIR": "./transcripts",
+    "SMF_REPORTS_DIR": "./reports",
+    "SMF_LOGS_DIR": "./logs",
+    "SMF_LOG_LEVEL": "INFO",
+    "SMF_WHISPER_MODEL_SIZE": "base"
+  },
+  "spinnerTipsEnabled": true,
+  "spinnerVerbs": {
+    "mode": "append",
+    "verbs": ["Extracting transcript", "Analyzing with agents", "Compiling report"]
+  }
+}
